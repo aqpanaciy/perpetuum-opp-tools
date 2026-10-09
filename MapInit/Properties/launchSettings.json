@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MapInit": {
+      "commandName": "Project",
+      "commandLineArgs": "-i ../../../../data/altitude.0200_main.png -o ../../../../data/altitude.0200.bin -r 512 -h 12288"
+    }
+  }
+}
