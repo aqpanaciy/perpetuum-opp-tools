@@ -89,7 +89,7 @@ namespace ConsoleApp
                         for (int j = 0; j < size; j++)
                         {
                             var pixelValue = array[i * size + j];
-                            pixels.GetPixel(i, j).SetChannel(0, pixelValue);
+                            pixels.GetPixel(j, i).SetChannel(0, pixelValue);
                         }
                     }
                 }
@@ -102,48 +102,49 @@ namespace ConsoleApp
             var size_half = size / 2;
             var array = new ushort[size * size];
 
-            // Find the maximum pixel value in the image
-            var maxArray = 0;
-            for (var i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    var pixel = pixels.GetPixel(i, j).GetChannel(0);
-
-                    array[i * size + j] = pixel;
-                    if (pixel > maxArray)
-                    {
-                        maxArray = pixel;
-                    }
-                }
-            }
-
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
                     // Initial height value
-                    ushort pixelValue = array[i * size + j];
+                    ushort pixelValue = pixels.GetPixel(j, i).GetChannel(0);
                     // By default, the height is zero.
                     ushort newPixelValue = 0;
 
                     var d = (i - size_half) * (i - size_half) + (j - size_half) * (j - size_half);
                     if (d < landRadius * landRadius)
                     {
-                        // Within the central circle, we only scale the heights.
-                        newPixelValue = (ushort)(pixelValue * maxHeight / maxArray);
+                        // Inside the land radius, we keep the original height value.
+                        newPixelValue = pixelValue;
                     }
                     else if (d < size_half * size_half)
                     {
-                        // Between the land radius and the edge of the circle, apply a smooth transition using a polynomial function.
+                        // Outside the land radius, we apply a smooth transition to zero height using a polynomial function.
                         var r = 1.0 - (Math.Sqrt(d) - landRadius) / landRadius;
                         var h = 6.0 * Math.Pow(r, 5) - 15.0 * Math.Pow(r, 4) + 10.0 * Math.Pow(r, 3);
-                        newPixelValue = (ushort)(h * pixelValue * maxHeight / maxArray);
+                        newPixelValue = (ushort)(h * pixelValue);
                     }
 
                     // We place the new value into the array.
                     array[i * size + j] = newPixelValue;
                 }
+            }
+
+            // We find the maximum value in the array to normalize the height values.
+            var maxArray = 0;
+            for (var k = 0; k < array.Length; k++)
+            { 
+                var value = array[k];
+                if (value > maxArray)
+                {
+                    maxArray = value;
+                }
+            }
+
+            for (var k = 0; k < array.Length; k++)
+            {
+                // Normalize the height values to the specified maximum height.
+                array[k] = (ushort)(array[k] * maxHeight / maxArray);
             }
 
             return array;
