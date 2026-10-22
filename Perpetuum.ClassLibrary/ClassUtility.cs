@@ -11,7 +11,7 @@ namespace Perpetuum.ClassLibrary
     public static class ClassUtility
     {
         [Flags]
-        private enum BlockingFlags : byte
+        public enum BlockingFlags : byte
         {
             Undefined = 0,
             Obstacle = 1,

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MapBlocking": {
+      "commandName": "Project",
+      "commandLineArgs": "-i ../../../../data/altitude.0200.bin -o ../../../../data/blocks.0200.bin"
+    }
+  }
+}
