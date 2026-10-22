@@ -8,8 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.17.2" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Perpetuum.ClassLibrary\Perpetuum.ClassLibrary.csproj" />
   </ItemGroup>
 
 </Project>

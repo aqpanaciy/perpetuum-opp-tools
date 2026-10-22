@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="MapInit/MapInit.csproj" />
+  <Project Path="Perpetuum.ClassLibrary/Perpetuum.ClassLibrary.csproj" Id="4f8cbca3-74de-42d6-8b77-9a9256e156ae" />
+  <Project Path="Perpetuum.MapInit/Perpetuum.MapInit.csproj" Id="ce05f1bd-9c6e-4736-a435-3a47d608555c" />
+  <Project Path="Perpetuum.TestProject/Perpetuum.TestProject.csproj" Id="df463190-7fbd-465a-8331-86150d44179f" />
 </Solution>

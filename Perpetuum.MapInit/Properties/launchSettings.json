@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Perpetuum.MapInit": {
+      "commandName": "Project",
+      "commandLineArgs": "-i ../../../../data/altitude.0200_main.png -o ../../../../data/altitude.0200.bin -r 512 -h 12288 -l \"1,1760,2048,4098,8196\""
+    }
+  }
+}
