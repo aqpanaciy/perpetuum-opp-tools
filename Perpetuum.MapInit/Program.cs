@@ -32,33 +32,43 @@ namespace Perpetuum.MapInit
             try
             {
                 var levels = ClassUtility.ParseUShortArray(Levels);
+                Console.WriteLine($"Parse numbers: {levels.Length}");
 
                 var data = ClassUtility.LoadImageAsPNG(InputFileName, out uint size);
+                Console.WriteLine($"Load: {InputFileName}");
                 if (LandRadius < 0 || LandRadius > size / 2)
                 {
                     throw new Exception($"Invalid land radius. Please specify a value between 0 and {size / 2}.");
                 }
 
                 data = ClassUtility.ProcessImage(data, size, LandRadius, MaxHeight);
+                Console.WriteLine($"Process image. Size: {size}");
 
                 var filename = ClassUtility.SaveAsJPEG(data, OutputFileName, size);
+                Console.WriteLine($"Save: {filename}");
                 // We recreate it from the JPEG to ensure that the data matches the data on the server.
                 data = ClassUtility.LoadImageAsJPEG(OutputFileName, out size);
+                Console.WriteLine($"Reload: {filename}");
 
                 ReadOnlySpan<byte> bytes = MemoryMarshal.AsBytes(new ReadOnlySpan<ushort>(data));
                 // Write the byte array to the output file
                 File.WriteAllBytes(OutputFileName, bytes);
+                Console.WriteLine($"Save: {OutputFileName}");
 
                 ushort prevLevel = 0;
                 byte[] mask;
                 for (var i = 0; i < levels.Length; i++)
                 {
                     mask = ClassUtility.ProcessMask(data, prevLevel, levels[i]);
-                    ClassUtility.SaveMaskAsPNG(mask, size, OutputFileName + "." + prevLevel.ToString() + "-" + levels[i].ToString());
+                    var maskFileName = OutputFileName + "." + prevLevel.ToString() + "-" + levels[i].ToString();
+                    ClassUtility.SaveMaskAsPNG(mask, size, maskFileName);
+                    Console.WriteLine($"Save: {maskFileName}");
                     prevLevel = levels[i];
                 }
                 mask = ClassUtility.ProcessMask(data, prevLevel, ushort.MaxValue);
-                ClassUtility.SaveMaskAsPNG(mask, size, OutputFileName + "." + prevLevel.ToString() + "-" + ushort.MaxValue.ToString());
+                var endMaskFileName = OutputFileName + "." + prevLevel.ToString() + "-" + ushort.MaxValue.ToString();
+                ClassUtility.SaveMaskAsPNG(mask, size, endMaskFileName);
+                Console.WriteLine($"Save: {endMaskFileName}");
             }
             catch (Exception ex)
             {
